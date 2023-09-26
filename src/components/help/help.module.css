@@ -1,0 +1,20 @@
+.container{
+    padding: 30px;
+    color: var(--main-color);
+    border-radius: 20px;
+    border: 3px solid var(--main-color); /* replace --main-color with your color variable or a color code */
+    border-radius: 25px;
+}
+
+.container h2{
+    font-size: 44px;
+}
+
+.container h3{
+    font-size: 38px;
+}
+
+.container a{
+    text-decoration: none;
+    color: var(--main-color);
+}

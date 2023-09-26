@@ -1,0 +1,25 @@
+
+.container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: row;
+    column-gap: 30px;
+    /* margin-top: 20px; */
+    background-color: var(--main-color);
+    padding: 10px;
+}
+
+.link{
+    text-decoration: none;
+    color: var(--main-light-background-color);
+    font-size: 24px;
+    padding: 4px;
+    transition: .3s;
+}
+
+.link:hover{
+    font-size: 28px;
+    padding: 0;
+    transition: .3s;
+}

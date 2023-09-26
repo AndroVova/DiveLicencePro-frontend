@@ -1,0 +1,4046 @@
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\App.css**
+```
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+.card-container.card {
+  max-width: 350px !important;
+  padding: 40px 40px;
+}
+
+.card {
+  background-color: #f7f7f7;
+  padding: 20px 25px 30px;
+  margin: 0 auto 25px;
+  margin-top: 50px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.profile-img-card {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.Center {
+  font-size: 100px;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+:root {
+  --main-color: #1f5ec3;
+  --main-some-light-color: #6a85d4;
+  --main-light-color: #33b27b;
+  --main-light-background-color: #FFFFFFEC
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\App.js**
+```
+import './App.css'
+
+import {BrowserRouter as Router, Routes} from 'react-router-dom';
+import {useEffect, useState} from "react";
+
+import {Provider} from "react-redux";
+import {getRoutesByAuth} from "./routes";
+import store from "./stores/authStore";
+
+const ONE_MINUTE = 10000
+
+function App() {
+  const [isAuthenticate, setAuthenticate] = useState(() => !!store.getState().auth.tokenValue)
+
+  const handleAuth = () => {
+    if (!store.getState().auth.tokenExpirationTime) {
+        setAuthenticate(false)
+        return
+    }
+  } 
+
+  store.subscribe(() => {
+    handleAuth()
+  })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        handleAuth()
+    }, 100 * ONE_MINUTE);
+    return () => clearInterval(interval);
+}, [])
+
+  return (
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          {
+            getRoutesByAuth(isAuthenticate, store.getState().auth.user)
+          }
+        </Routes>
+      </Router>
+    </Provider>
+  );
+}
+
+export default App;
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\App.test.js**
+```
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\i18next.js**
+```
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+import enTranslation from './locales/en/translation.json';
+import uaTranslation from './locales/ua/translation.json';
+
+export const LANG_KEY = 'LANG_KEY'
+
+const lang = localStorage.getItem(LANG_KEY) ?? "en"
+
+i18n
+    .use(initReactI18next)
+    .init({
+        resources: {
+            en: { translation: enTranslation },
+            ua: { translation: uaTranslation },
+        },
+        lng: lang,
+        fallbackLng: lang,
+        interpolation: {
+            escapeValue: false
+        }
+    });
+
+export default i18n;
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\index.css**
+```
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\index.js**
+```
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
+import App from './App';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+reportWebVitals();
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\project_code.txt**
+```
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\reportWebVitals.js**
+```
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\routes.js**
+```
+import { Navigate, Route } from "react-router-dom";
+
+import { AdminPage } from "./pages/AdminPage";
+import { CreateCertificatePage } from "./pages/CreateCertificatePage";
+import { CreateClubPage } from "./pages/CreateClubPage";
+import { CreateLessonPage } from "./pages/CreateLessonPage";
+import { CreateSensorPage } from "./pages/CreateSensorPage";
+import { CreateUserPage } from "./pages/CreateUserPage";
+import { HelpPage } from "./pages/HelpPage";
+import Home from "./components/Home";
+import { LessonPage } from "./pages/LessonPage";
+import { LoginPage } from "./pages/LoginPage";
+import NavBar from "./components/utils/NavBar/NavBar";
+import ProfilePage from "./pages/ProfilePage";
+import { ShowCertificatesPage } from "./pages/ShowCertificatesPage";
+import { ShowClubsPage } from "./pages/ShowClubsPage";
+import { ShowSensorsPage } from "./pages/ShowSensorsPage";
+import { ShowUsersPage } from "./pages/ShowUsersPage";
+
+export function getRoutesByAuth(isAuthenticated, user) {
+  if (!isAuthenticated || user === null || user === undefined) {
+    return (
+      <>
+        <Route path={"/support"} element={<HelpPage />} />
+        <Route path={"/auth/login"} element={<LoginPage />} />
+        <Route path={"/singup"} element={<CreateUserPage />} />
+
+        <Route path="/*" element={<Navigate to="/auth/login" />} />
+      </>
+    );
+  }
+  if (user.roles.length === 2) {
+    return (
+      <>
+        <Route path="/users" element={putNav(<ShowUsersPage />)}></Route>
+        <Route path="/users/create" element={putNav(<CreateUserPage />)} />
+
+        <Route path="/clubs" element={putNav(<ShowClubsPage />)}></Route>
+        <Route path="/clubs/create" element={putNav(<CreateClubPage />)} />
+
+        <Route path="/sensors" element={putNav(<ShowSensorsPage />)}></Route>
+        <Route path="/sensors/create" element={putNav(<CreateSensorPage />)} />
+
+        <Route path="/certificates" element={putNav(<ShowCertificatesPage />)}></Route>
+        <Route path="/certificates/create" element={putNav(<CreateCertificatePage />)}/>
+
+        <Route path="/admin" element={putNav(<AdminPage />)}></Route>
+        <Route path="/lessons" element={putNav(<LessonPage />)}></Route>
+        <Route path="/lessons/create" element={putNav(<CreateLessonPage />)}></Route>
+        <Route path="/profile" element={putNav(<ProfilePage />)}></Route>
+        <Route path="/home" element={putNav(<Home />)} />
+        <Route path="/support" element={<HelpPage />} />
+
+        <Route path="/*" element={<Navigate to="/home" />} />
+      </>
+    );
+  }
+
+  if (user.roles.length === 1) {
+    return (
+      <>
+        <Route path="/lessons" element={putNav(<LessonPage />)}></Route>
+        <Route path="/profile" element={putNav(<ProfilePage />)}></Route>
+        <Route path="/home" element={putNav(<Home />)} />
+        <Route path="/support" element={<HelpPage />} />
+
+        <Route path="/*" element={<Navigate to="/home" />} />
+      </>
+    );
+  }
+  return (
+    <>
+      <Route path={"/support"} element={<HelpPage />} />
+      <Route path="/*" element={<Navigate to="/support" />} />
+    </>
+  );
+}
+
+export function putNav(component, isLetIn = false) {
+  return (
+    <>
+      <NavBar isLetIn={isLetIn} />
+      {component}
+    </>
+  );
+}
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\setupTests.js**
+```
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\actions\userActions.js**
+```
+export const updateUserImage = (imageUrl) => {
+    return {
+        type: 'UPDATE_USER_IMAGE',
+        payload: imageUrl
+    };
+};
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\clients\app.const.js**
+```
+export const SERVICE_URL = 'http://127.0.0.1:8080'
+export const JSON_HEADERS = {
+    headers: {
+        'Content-Type': 'application/json'
+    }
+}
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\clients\auth.client.js**
+```
+import {SERVICE_URL} from "./app.const";
+import Response, {fetchGet, fetchPost} from "./response";
+import axios from "axios";
+
+const GET_TOKEN = SERVICE_URL + '/authenticate'
+
+const GET_PROFILE = SERVICE_URL + '/profile/email/'
+
+export async function fetchToken(userForm){
+
+    return axios
+    .post(GET_TOKEN, userForm)
+    .then((response) => {
+        if (response.data) {
+            sessionStorage.setItem("token", JSON.stringify(response.data));
+        }
+
+        return response.data;
+    }).catch((error) => {
+        console.error("Error while fetching profile:", error);
+        //throw error;
+      });
+}
+
+export async function fetchUser(token, userForm){
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+
+    return await axios.get(GET_PROFILE + userForm.email, config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error while fetching profile:", error);
+      //throw error;
+    });
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\clients\response.js**
+```
+import axios from "axios";
+import _ from "lodash";
+
+export default class Response {
+    constructor() {
+        this._isError = false;
+        this._data = null;
+    }
+
+    static of(data,isError){
+        const respond = new Response()
+
+        respond.data = data
+        respond.isError =isError
+
+        return respond
+    }
+
+    get isError() {
+        return this._isError;
+    }
+
+    set isError(value) {
+        this._isError = value;
+    }
+
+    get data() {
+        return this._data;
+    }
+
+    set data(value) {
+        this._data = value;
+    }
+
+    handleError(err){
+        this.isError = true
+        this._data = err?.response?.data
+    }
+
+    handleResult(result){
+        if(!this.isError){
+            this.data = result.data
+        }
+    }
+
+    ifNotError(callBack){
+        if(!this.isError){
+            callBack(this.data)
+        }
+    }
+}
+
+const DEFAULT_GET_CONFIG = {
+    token: null
+}
+
+export async function fetchGet(url, query= {}, token ) {
+    const response = new Response();
+
+    const head = !config.token ? {} : {
+        Authorization: `Token ${token}`
+    }
+
+    const config = {
+        Authorization: `Bearer ${token}`
+    }
+
+    const params = new URLSearchParams(_.omitBy(query, _.isUndefined))
+
+    response.handleResult(
+        await axios.get(url, {
+            headers: config
+        }).catch(error => {
+            response.handleError(error)
+        })
+    )
+
+    return response;
+}
+
+const DEFAULT_CONFIG =  {
+    method: 'POST',
+    headers: {},
+    body: null
+}
+
+const middleWear = (config,token) =>{
+
+    if(config?.headers?.Authorization){
+        return
+    }
+    if(config.headers && token ){
+        config.headers.Authorization = `Bearer ${token}`
+    }else {
+        config.headers =  !token ? '' : {
+            Authorization: `Bearer ${token}`
+        }
+    }
+}
+
+const toConfig = (c) =>{
+    return {
+        headers: c.headers,
+    }
+}
+
+export async function fetchPost(url,token = null, config = DEFAULT_CONFIG) {
+    const response = new Response();
+
+    middleWear(config,token)
+
+    response.handleResult(
+        await axios.post(url,config.body, toConfig(config)).catch(error => {
+            response.handleError(error)
+        })
+    )
+    return response;
+}
+
+export async function fetchPostFilter(axiosMethod,url,token = null, config = DEFAULT_CONFIG){
+    const response = new Response();
+
+    middleWear(config,token)
+
+    response.handleResult(
+        await axiosMethod(url,config.body, toConfig(config)).catch(error => {
+            response.handleError(error)
+        })
+    )
+
+    return response;
+}
+
+export async function fetchPut(url,token = null, config = DEFAULT_CONFIG) {
+    return await fetchPostFilter(axios.put,url,token,config);
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\home.css**
+```
+.Center {
+    text-align: center;
+  }
+  
+  .ShowText {
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
+  }
+
+  .Center h1 {
+    font-size: 90px;
+  }
+  
+  .Center p {
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+    text-align: justify;
+  text-justify: inter-word;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fade-in {
+    opacity: 0;
+    animation: fade-in 2s forwards;
+  }
+  
+  .show-text {
+    animation-delay: 1s; /* Adjust this value as needed */
+  }
+
+  .text-box{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width:65%
+  }
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\Home.js**
+```
+import "./home.css"; // Import the CSS file
+
+import React, { useEffect, useState } from "react";
+
+import { useTranslation } from "react-i18next";
+
+const Home = () => {
+  const [showText, setShowText] = useState(false);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowText(true);
+    }, 2000); // Delay of 2 seconds (2000 milliseconds)
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div>
+      <div className="Center">
+        <h1 className={`fade-in`}>DiveLicencePro</h1>
+        <div className="text-box">
+          <p className={`${showText ? "fade-in show-text" : ""}`}>
+            {t("home_message")}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\auth\Login\Login.jsx**
+```
+import {ButtonBox} from "../../utils/ButtonBox/ButtonBox";
+import InputBox from "../../utils/InputBox/InputBox";
+import {Link} from "react-router-dom";
+import styles from './login.module.css'
+import {useTranslation} from "react-i18next";
+
+export const Login = () => {
+    const {t} = useTranslation()
+    return (
+        <div className={styles.container}>
+            <h2>{t('login')}</h2>
+            <InputBox labelText={t('username')} name={'email'}/>
+            <InputBox labelText={t('password')} name={'password'} type={"password"}/>
+            <Link to={"../support"} replace={true}>{t('support')}</Link>
+            <Link to={"../singup"} replace={true}>{t("sign_up")}</Link>
+
+            <ButtonBox text={t('submit')  } settings={({
+                style: {
+                    width: "110px",
+                    margin: "10px 100px 0"
+                },
+                type: 'submit'
+            })}/>
+        </div>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\auth\Login\login.module.css**
+```
+.container {
+    width: 350px;
+    min-height: 40px;
+    border: 3px solid var(--main-color);
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    row-gap: 6px;
+}
+
+.container h2{
+    padding: 0;
+    margin: 0;
+    font-size: 40px;
+    text-align: center;
+    color: var(--main-color);
+}
+
+.container a{
+    color: var(--main-color);
+    text-decoration: none;
+    padding-left: 10px;
+    font-size: 20px;
+    transition: .3s;
+}
+
+.container a:hover{
+    color: var(--main-light-color);
+    transition: .3s;
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\auth\UserSingUp\user.sign.up.module.css**
+```
+.box{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 50px;
+    row-gap: 10px;
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\auth\UserSingUp\UserSingUp.jsx**
+```
+import {btnSize, inputSize} from "../../../utils/ui.utils";
+
+import {ButtonBox} from "../../utils/ButtonBox/ButtonBox";
+import {Container} from "../../layout/Container/Container";
+import InputBox from "../../utils/InputBox/InputBox";
+import { Link } from "react-router-dom";
+import styles from './user.sign.up.module.css'
+import {useTranslation} from "react-i18next";
+
+export const UserSignUp = () => {
+    const {t} = useTranslation()
+
+    return (
+        <Container width={"700px"}>
+            <Link to={'../'} replace={true}>Back</Link>
+            <h2>{t('sign_up')}</h2>
+            <div className={styles.box}>
+                
+                <InputBox labelText={t('email')} inputParam={({...inputSize, minLength: 1, required: true})} name={'email'}/>
+                <InputBox labelText={t('name')} inputParam={({...inputSize, minLength: 5, required: true})} name={'name'}/>
+                <InputBox labelText={t('place_of_residence')} inputParam={({...inputSize, minLength: 3, required: true})} name={'place_of_residence'}/>
+
+                <InputBox labelText={t('birth_date')} type={'date'} inputParam={({...inputSize, required: true})} name={'birth_date'}/>
+                <InputBox labelText={t('password')} inputParam={({...inputSize, minLength: 8, required: true})} name={'password'}/>
+                <InputBox labelText={t('repeat_password')} inputParam={({...inputSize, minLength: 8, required: true})}  name={'password_two'}/>
+            </div>
+            <ButtonBox settings={btnSize} text={t('submit')}/>
+        </Container>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\help\Help.js**
+```
+import { Col, Container, Row } from 'react-bootstrap';
+
+import {Link} from "react-router-dom";
+import React from 'react';
+import styles from './help.module.css'
+import {useSelector} from "react-redux";
+import {useTranslation} from "react-i18next";
+
+export const Help = () => {
+        const { t } = useTranslation();
+        const { user } = useSelector(s => s.auth);
+    
+        return (
+            <Container className={styles.container}>
+                <Row className="mb-3">
+                    <Col>
+                        <Link to="../" replace>Back</Link>
+                    </Col>
+                </Row>
+    
+                <Row className="mb-3">
+                    <Col>
+                        <h2>{t('help_label')}</h2>
+                    </Col>
+                </Row>
+    
+                <Row className="mb-3">
+                    <Col>
+                        <h3>{t('Email')}: vova.safoschin@gmail.com</h3>
+                    </Col>
+                </Row>
+    
+                <Row className="mb-3">
+                    <Col>
+                        <h3>{t('phone_number')}: +380500397160</h3>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    }
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\help\help.module.css**
+```
+.container{
+    padding: 30px;
+    color: var(--main-color);
+    border-radius: 20px;
+    border: 3px solid var(--main-color); /* replace --main-color with your color variable or a color code */
+    border-radius: 25px;
+}
+
+.container h2{
+    font-size: 44px;
+}
+
+.container h3{
+    font-size: 38px;
+}
+
+.container a{
+    text-decoration: none;
+    color: var(--main-color);
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\layout\Center\Center.jsx**
+```
+import styles from './center.module.css'
+import {useEffect, useRef, useState} from "react";
+import {useWindowSize} from "../../../hooks/useWindowSize";
+
+const Center = ({children, isFullScreen = false, useFreeHeightSpace = false}) => {
+    const [heightStyle, setHeightStyle] = useState({})
+
+    const row = styles.row + " " + (isFullScreen ? styles.fullScreen : "")
+    const {height} = useWindowSize()
+    const containerRef = useRef(null)
+
+    const resetHeight = () => {
+        if (useFreeHeightSpace !== true || isFullScreen) {
+            setHeightStyle(s => s.height ? {} : s)
+            return
+        }
+        const containerSize = containerRef.current.getBoundingClientRect();
+
+        const freeHeight = height - containerSize.y;
+
+        if (freeHeight <= containerSize.height) {
+            return
+        }
+        setHeightStyle({
+            height: `${(freeHeight / height) * 100}vh`
+        })
+    };
+
+    useEffect(() => {
+        if (containerRef.current != null) {
+            resetHeight();
+        }
+    }, [containerRef.current])
+
+
+    return (
+        <div ref={containerRef} className={row} style={heightStyle}>
+            <div className={styles.column}>
+                {children}
+            </div>
+        </div>
+    )
+}
+
+export default Center
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\layout\Center\center.module.css**
+```
+.row{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  
+  }
+  
+  .fullScreen{
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .column{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\layout\Container\auth.container.module.css**
+```
+.container{
+    width: 350px;
+    min-height: 40px;
+    border: 3px solid var(--main-color);
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.container h2{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 40px;
+    color: var(--main-color);
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\layout\Container\Container.jsx**
+```
+import styles from './auth.container.module.css'
+export const Container = ({width = "",children}) => {
+    return (
+        <div className={styles.container} style={({width})}>
+            {children}
+        </div>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\postForms\CreateCertificateForm.jsx**
+```
+import {btnSize, inputSize} from "../../utils/ui.utils";
+
+import {ButtonBox} from "../utils/ButtonBox/ButtonBox";
+import {Container} from "../layout/Container/Container";
+import InputBox from "../utils/InputBox/InputBox";
+import { Link } from "react-router-dom";
+import styles from './user.sign.up.module.css'
+import {useTranslation} from "react-i18next";
+
+export const CreateCertificateForm = () => {
+    const {t} = useTranslation()
+
+    return (
+        <Container width={"700px"}>
+            <Link to={'../'} replace={true}>Back</Link>
+            <h2>{t('create_cert')}</h2>
+            <div className={styles.box}>
+                <InputBox labelText={t('name')} inputParam={({...inputSize, minLength: 3, required: true})} name={'name'}/>
+                <InputBox labelText={t('max_depth')} inputParam={({...inputSize, minLength: 1, required: true})} name={'maxDepth'}/>
+                <InputBox labelText={t('number_of_successful_lessons_to_get')} inputParam={({...inputSize, required: true})} name={'numberOfSuccessfulLessonsToGet'}/></div>
+            <ButtonBox settings={btnSize} text={t('submit')}/>
+        </Container>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\postForms\CreateClubForm.jsx**
+```
+import {btnSize, inputSize} from "../../utils/ui.utils";
+
+import {ButtonBox} from "../utils/ButtonBox/ButtonBox";
+import {Container} from "../layout/Container/Container";
+import InputBox from "../utils/InputBox/InputBox";
+import { Link } from "react-router-dom";
+import styles from './user.sign.up.module.css'
+import {useTranslation} from "react-i18next";
+
+export const CreateClubForm = () => {
+    const {t} = useTranslation()
+
+    return (
+        <Container width={"700px"}>
+            <Link to={'../'} replace={true}>Back</Link>
+            <h2>{t('create_club')}</h2>
+            <div className={styles.box}>
+                <InputBox labelText={t('name')} inputParam={({...inputSize, minLength: 3, required: true})} name={'name'}/>
+                <InputBox labelText={t('address')} inputParam={({...inputSize, minLength: 3, required: true})} name={'adress'}/>
+                <InputBox labelText={t('city')} inputParam={({...inputSize, minLength: 3, required: true})} name={'city'}/>
+                <InputBox labelText={t('country')} inputParam={({...inputSize, required: true})} name={'country'}/></div>
+            <ButtonBox settings={btnSize} text={t('submit')}/>
+        </Container>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\postForms\CreateLessonForm.jsx**
+```
+import { btnSize, inputSize } from "../../utils/ui.utils";
+import { useEffect, useState } from "react";
+
+import { ButtonBox } from "../utils/ButtonBox/ButtonBox";
+import { Container } from "../layout/Container/Container";
+import InputBox from "../utils/InputBox/InputBox";
+import { Link } from "react-router-dom";
+import { getUsers } from "../users/UsersList/user.response";
+import styles from "./user.sign.up.module.css";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+export const CreateLessonForm = () => {
+  const { t } = useTranslation();
+
+  const { tokenValue } = useSelector((s) => s.auth);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const usersData = await getUsers(tokenValue);
+        setUsers(usersData);
+      } catch (error) {
+        console.error("Error while getting users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  return (
+    <Container width={"700px"}>
+      <Link to={"../lessons"} replace={true}>
+        {t("back")}
+      </Link>
+      <h2>{t("create_lesson")}</h2>
+      <div className={styles.box}>
+        <InputBox
+          labelText={t("name")}
+          inputParam={{ ...inputSize, minLength: 3, required: true }}
+          name={"name"}
+        />
+        <InputBox
+          labelText={t("task")}
+          inputParam={{ ...inputSize, minLength: 3, required: true }}
+          name={"task"}
+        />
+        <InputBox
+          labelText={t("date")}
+          type={"datetime-local"}
+          inputParam={{ ...inputSize, required: true }}
+          name={"date"}
+        />
+        <InputBox
+          labelText={t("duration")}
+          inputParam={{ ...inputSize, minLength: 3, required: true }}
+          name={"duration"}
+        />
+        {/* <InputBox labelText={t('user')} inputParam={({...inputSize, required: true})} name={'user'}/> */}
+        <div className={styles.inputBox}>
+        <label>{t("users")}</label>
+          <select required={true} name={"user"}>
+            
+            {users.map((user) => (
+              <option
+                className="form-control"
+                required={true}
+                name={"user"}
+                key={user.id}
+                value={user.id}
+              >
+                {user.id} - {user.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <ButtonBox settings={btnSize} text={t("submit")} />
+    </Container>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\postForms\CreateSensorForm.jsx**
+```
+import {btnSize, inputSize} from "../../utils/ui.utils";
+
+import {ButtonBox} from "../utils/ButtonBox/ButtonBox";
+import {Container} from "../layout/Container/Container";
+import InputBox from "../utils/InputBox/InputBox";
+import { Link } from "react-router-dom";
+import styles from './user.sign.up.module.css'
+import {useTranslation} from "react-i18next";
+
+export const CreateSensorForm = () => {
+
+    const {t} = useTranslation()
+
+    return (
+        <Container width={"700px"}>
+            <Link to={'../'} replace={true}>Back</Link>
+            <h2>{t('create_sensor')}</h2>
+            <div className={styles.box}>
+                <InputBox labelText={t('name')} inputParam={({...inputSize, minLength: 3, required: true})} name={'name'}/>
+                <InputBox labelText={t('max_heart_rate')} inputParam={({...inputSize, minLength: 2, required: true})} name={'heartRate'}/>
+                <InputBox labelText={t('max_depth')} inputParam={({...inputSize, minLength: 1, required: true})} name={'depth'}/>
+                <InputBox labelText={t('max_time')} inputParam={({...inputSize, required: true})} name={'time'}/></div>
+            <ButtonBox settings={btnSize} text={t('submit')}/>
+        </Container>
+    )
+}
+
+// "name": sensor.name,
+//             "maxHeartRateValue": sensor.heartRate,
+//             "maxDepth": sensor.depth,
+//             "maxTime": sensor.time
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\postForms\user.sign.up.module.css**
+```
+.box{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 50px;
+    row-gap: 10px;
+}
+
+.inputBox {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    row-gap: 1px;
+  }
+  
+  .inputBox select {
+    width: auto;
+    font-size: 20px;
+    padding: 5px 10px;
+    color: var(--main-some-light-color);
+    border: 2px solid var(--main-color);
+    outline: none;
+    border-radius: 15px;
+  }
+  
+  .inputBox label {
+    padding-left: 14px;
+    font-size: 24px;
+    color: var(--main-color);
+  }
+  
+  .inputBox select:hover,
+  .inputBox select:focus {
+    border: 2px solid var(--main-light-color);
+  }
+  
+  .inputBox label:hover {
+    color: var(--main-light-color);
+  }
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\list.module.css**
+```
+.container{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 10px;
+}
+
+.container h2{
+    color: var(--main-color);
+    padding: 5px;
+    margin: 0;
+    font-size: 36px;
+}
+
+.container p{
+    background-color: var(--main-light-color);
+    padding: 10px;
+    color: var(--main-light-background-color);
+    font-size: 24px;
+    border-radius: 20px;
+    max-width: 800px;
+    margin: 0;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    max-width: 400px; /* Adjust the max-width as needed */
+}
+
+.modalContent h2 {
+    margin-top: 0;
+}
+
+.modalContent form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modalContent form input,
+.modalContent form select,
+.modalContent form button{
+    margin-bottom: 10px;
+}
+
+.modalContent button {
+    width: 75px;
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\list.sort.js**
+```
+import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export const sortList = (list, sortColumn, sortDirection) => {
+  if (sortColumn === "") {
+    return list;
+  }
+
+  return list.slice().sort((a, b) => {
+    const columnA = getColumnValue(a, sortColumn);
+    const columnB = getColumnValue(b, sortColumn);
+
+    if (columnA < columnB) {
+      return sortDirection === "ASC" ? -1 : 1;
+    } else if (columnA > columnB) {
+      return sortDirection === "ASC" ? 1 : -1;
+    } else {
+      return 0;
+    }
+  });
+};
+
+const getColumnValue = (item, column) => {
+  const properties = column.split(".");
+  let value = item;
+
+  for (let property of properties) {
+    value = value[property];
+    if (!value) break;
+  }
+
+  return value && typeof value === "object" ? value.id : value;
+};
+
+export const getSortIcon = (
+  column,
+  sortColumn,
+  sortDirection
+) => {
+  if (sortColumn === column) {
+    return sortDirection === "ASC" ? (
+      <FontAwesomeIcon icon={faSortUp} />
+    ) : (
+      <FontAwesomeIcon icon={faSortDown} />
+    );
+  }
+  return null;
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\CertificatesList\certificate.response.js**
+```
+import axios from "axios";
+
+const GET_CERTIFICATES = "http://127.0.0.1:8080/certificate/admin/all";
+const GET_USERS = "http://127.0.0.1:8080/custom_user/admin/all";
+const GET_ADMINS = "http://127.0.0.1:8080/custom_user/admin/all-admins";
+
+export const getData = async (tokenValue) => {
+  const respond = await axios.get(GET_CERTIFICATES, {
+    headers: {
+      Authorization: "Bearer " + tokenValue,
+    },
+  });
+  const respond1 = await axios.get(GET_USERS, {
+    headers: {
+      Authorization: "Bearer " + tokenValue,
+    },
+  });
+  const respond2 = await axios.get(GET_ADMINS, {
+    headers: {
+      Authorization: "Bearer " + tokenValue,
+    },
+  });
+
+  return { certificates: respond.data, users: respond1.data, admins: respond2.data };
+};
+
+export const putCertificate = async (selectedCert, tokenValue) => {
+  const responseBody = {
+    name: selectedCert.name,
+    date: selectedCert.date,
+    numberOfSuccessfulLessonsToGet: selectedCert.numberOfSuccessfulLessonsToGet,
+    maxDepth: selectedCert.maxDepth,
+    isCompleted: selectedCert.isCompleted,
+  };
+  const PUT_CERTIFICATE = `http://localhost:8080/certificate/admin/${selectedCert.id}/user/${selectedCert.customUser.id}/instructor/${selectedCert.instructor.id}`;
+  await axios
+    .put(PUT_CERTIFICATE, responseBody, {
+      headers: {
+        Authorization: "Bearer " + tokenValue,
+      },
+    })
+    .catch((error) => {
+      console.error("Error while putting cert:", error);
+    });
+};
+
+export const handleSelectInputChange = (e,field, setSelectedCert) => {
+  const value = e.target.value;
+  setSelectedCert((prevCert) => ({
+    ...prevCert,
+    [field]: {
+      ...prevCert.field,
+      id: value,
+    },
+  }));
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\CertificatesList\CertificatesList.jsx**
+```
+import { getData, handleSelectInputChange, putCertificate } from "./certificate.response";
+import { getSortIcon, sortList } from "../list.sort";
+import { useEffect, useState } from "react";
+
+import { ButtonBox } from "../../utils/ButtonBox/ButtonBox";
+import { ModalCertificateForm } from "../../utils/ModalCertificateForm/ModalCertificateForm";
+import axios from "axios";
+import styles from "../list.module.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+const createCertsBtn = {
+  style: {
+    width: "220px",
+    fontSize: "28px",
+  },
+};
+
+export const CertificatesList = () => {
+  const { tokenValue } = useSelector((s) => s.auth);
+  const [certs, setCerts] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [admins, setAdmins] = useState([]);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [selectedCert, setSelectedCert] = useState(null);
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [sortColumn, setSortColumn] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
+
+
+  useEffect(() => {
+    const start = async () => {
+      const result  = await getData(tokenValue)
+
+      setCerts(result.certificates);
+      setUsers(result.users);
+      setAdmins(result.admins);
+    };
+
+    start();
+  }, []);
+
+  const handleSubmit = async () => {
+    await putCertificate(selectedCert, tokenValue)
+    setModalOpen(false)
+    
+  };
+
+  const handleUserChange = (e) => {
+    handleSelectInputChange(e,"customUser", setSelectedCert)
+  };
+
+  const handleInstructorChange = (e) => {
+    handleSelectInputChange(e,"instructor", setSelectedCert)
+  };
+
+  const handleCreateClub = () => {
+    navigate("../certificates/create", { replace: true });
+  };
+
+  const handleUpdateCert = (cert) => {
+    setSelectedCert(cert);
+    setModalOpen(true);
+  };
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortColumn(column);
+      setSortDirection("ASC");
+    }
+  };
+
+  const sortedCertificates = sortList(certs, sortColumn, sortDirection);
+
+
+  return (
+    <div className={styles.container}>
+      <h2>{t("certificates")}</h2>
+      <table className="table table-striped table-bordered">
+        <thead className="thead-dark">
+        <tr>
+            <th onClick={() => handleSort("id")}>
+              {t("id")}
+              {getSortIcon("id", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("date")}>
+              {t("date")}
+              {getSortIcon("date", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("name")}>
+              {t("name")}
+              {getSortIcon("name", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("maxDepth")}>
+              {t("max_depth")}
+              {getSortIcon("maxDepth", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("isCompleted")}>
+              {t("completion")}
+              {getSortIcon("isCompleted", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("numberOfSuccessfulLessonsToGet")}>
+              {t("number_of_successful_lessons_to_get")}
+              {getSortIcon("numberOfSuccessfulLessonsToGet", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("customUser.id")}>
+              {t("user")}
+              {getSortIcon("customUser.id", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("instructor.id")}>
+              {t("instructor")}
+              {getSortIcon("instructor.id", sortColumn, sortDirection)}
+            </th>
+            <th>{t("update")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedCertificates.map((c) => (
+            <tr key={"w-" + c.id}>
+              <td>{c.id}</td>
+              <td>{c.date}</td>
+              <td>{c.name}</td>
+              <td>{c.maxDepth}</td>
+              <td>{c.isCompleted ? t("complete") : t("not_completed")}</td>
+              <td>{c.numberOfSuccessfulLessonsToGet}</td>
+              <td>{c.customUser !== null ? c.customUser.id : null}</td>
+              <td>{c.instructor !== null ? c.instructor.id : null}</td>
+              <td>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleUpdateCert(c)}
+                >
+                  {t("update")}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ButtonBox
+        text={t("create_cert")}
+        settings={{
+          ...createCertsBtn,
+          onClick: handleCreateClub,
+        }}
+      />
+
+      <ModalCertificateForm
+        isOpen={isModalOpen}
+        closeModal={() => setModalOpen(false)}
+        handleSubmit={handleSubmit}
+        selectedCert={selectedCert}
+        handleUserChange={handleUserChange}
+        handleInstructorChange={handleInstructorChange}
+        styles={styles}
+        users={users}
+        admins={admins}
+        t={t}
+      />
+    </div>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\ClubsList\club.response.js**
+```
+import axios from "axios";
+
+export const updateClub = async (club, tokenValue) => {
+  const responseBody = {
+    name: club.name,
+    address: club.address,
+    city: club.city,
+    country: club.country,
+  };
+  const PUT_CLUB = `http://localhost:8080/dive_club/admin/${club.id}`;
+  try {
+    const response = await axios.put(PUT_CLUB, responseBody, {
+      headers: {
+        Authorization: "Bearer " + tokenValue,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while putting club:", error);
+  }
+};
+
+export const deleteClub = async (club, tokenValue) => {
+  if (confirm("Are you sure you want to delete this club?")) {
+    try {
+      await axios.delete(`http://localhost:8080/dive_club/admin/${club.id}`, {
+        headers: {
+          Authorization: "Bearer " + tokenValue,
+        },
+      });
+      window.location.reload();
+    } catch (error) {
+      console.error("Error while deleting club:", error);
+    }
+  }
+};
+
+export const getClubs = async (tokenValue) => {
+    const GET_CLUBS = "http://127.0.0.1:8080/dive_club/admin/all";
+    try {
+      const response = await axios.get(GET_CLUBS, {
+        headers: {
+          Authorization: "Bearer " + tokenValue,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error while getting clubs:", error);
+    }
+  };
+
+  export const handleInputChange = (e, field, setSelectedClub) => {
+    const value = e.target.value;
+    setSelectedClub((prevClub) => ({
+      ...prevClub,
+      [field]: value,
+    }));
+  };
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\ClubsList\ClubList.jsx**
+```
+import {
+  deleteClub,
+  getClubs,
+  handleInputChange,
+  updateClub,
+} from "./club.response";
+import { getSortIcon, sortList } from "../list.sort";
+import { useEffect, useState } from "react";
+
+import { ButtonBox } from "../../utils/ButtonBox/ButtonBox";
+import { ModalClubForm } from "../../utils/ModalClubForm/ModalClubForm";
+import styles from "../list.module.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+const createClubBtn = {
+  style: {
+    width: "220px",
+    fontSize: "28px",
+  },
+};
+
+export const ClubList = () => {
+  const { tokenValue } = useSelector((s) => s.auth);
+  const [clubs, setClubs] = useState([]);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  
+  const [sortColumn, setSortColumn] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
+
+  const [selectedClub, setSelectedClub] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const clubsData = await getClubs(tokenValue);
+      setClubs(clubsData);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleSubmit = async () => {
+    await updateClub(selectedClub, tokenValue);
+    setModalOpen(false);
+  };
+
+  const handleNameChange = (e) => {
+    handleInputChange(e, "name", setSelectedClub);
+  };
+
+  const handleAddressChange = (e) => {
+    handleInputChange(e, "address", setSelectedClub);
+  };
+
+  const handleCityChange = (e) => {
+    handleInputChange(e, "city", setSelectedClub);
+  };
+
+  const handleCountryChange = (e) => {
+    handleInputChange(e, "country", setSelectedClub);
+  };
+
+  const handleCreateClub = () => {
+    navigate("../clubs/create", { replace: true });
+  };
+
+  const handleUpdateClub = (club) => {
+    setSelectedClub(club);
+    setModalOpen(true);
+  };
+
+  const handleDeleteClub = async (club) => {
+    deleteClub(club, tokenValue);
+  };
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortColumn(column);
+      setSortDirection("ASC");
+    }
+  };
+
+  const sortedClubs = sortList(clubs, sortColumn, sortDirection);
+
+  return (
+    <div className={styles.container}>
+      <h2>{t("clubs")}</h2>
+      <table className="table table-striped table-bordered">
+        <thead className="thead-dark">
+        <tr>
+            <th onClick={() => handleSort("id")}>
+              {t("id")}
+              {getSortIcon("id", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("name")}>
+              {t("name")}
+              {getSortIcon("name", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("country")}>
+              {t("country")}
+              {getSortIcon("country", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("city")}>
+              {t("city")}
+              {getSortIcon("city", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("address")}>
+              {t("address")}
+              {getSortIcon("address", sortColumn, sortDirection)}
+            </th>
+            <th>{t("update")}</th>
+            <th>{t("delete")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedClubs.map((c) => (
+            <tr key={"w-" + c.id}>
+              <td>{c.id}</td>
+              <td>{c.name}</td>
+              <td>{c.country}</td>
+              <td>{c.city}</td>
+              <td>{c.address}</td>
+              <td>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleUpdateClub(c)}
+                >
+                  {t("update")}
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteClub(c)}
+                >
+                  {t("delete")}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ButtonBox
+        text={t("create_club")}
+        settings={{
+          ...createClubBtn,
+          onClick: handleCreateClub,
+        }}
+      />
+      <ModalClubForm
+        isOpen={isModalOpen}
+        closeModal={() => setModalOpen(false)}
+        handleSubmit={handleSubmit}
+        selectedClub={selectedClub}
+        handleNameChange={handleNameChange}
+        handleAddressChange={handleAddressChange}
+        handleCityChange={handleCityChange}
+        handleCountryChange={handleCountryChange}
+        styles={styles}
+        t={t}
+      />
+    </div>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\LessonList\lesson.response.js**
+```
+import axios from "axios";
+
+const GET_LESSON_TESTINGS = "http://localhost:8080/lesson_testing/all/lesson/";
+
+export const getLessonTestings = async (id, tokenValue) => {
+  const a = await axios
+    .get(GET_LESSON_TESTINGS + id, {
+      headers: { Authorization: `Bearer ${tokenValue}` },
+    })
+    .then(
+      (responce) => {
+        return responce.data;
+      },
+      (error) => {
+        console.error("Error while fetching testings:", error);
+      }
+    );
+    return a;
+};
+
+
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\LessonList\LessonList.jsx**
+```
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import React, { useEffect, useState } from "react";
+
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import { ModalLessonForm } from "../../utils/ModalLessonForm/ModalLessonForm";
+import Row from "react-bootstrap/Row";
+import axios from "axios";
+import { getLessonTestings } from "./lesson.response";
+import styles from "../list.module.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+const GET_LESSONS = "http://localhost:8080/lesson/user/";
+
+const LessonList = () => {
+  const [statusFilter, setStatusFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [lessons, setLessons] = useState([]);
+  const { user } = useSelector((s) => s.auth);
+  const { tokenValue } = useSelector((s) => s.auth);
+
+  const [selectedLesson, setSelectedLesson] = useState(null);
+  const [lessonTesting, setLessonTestings] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    getLessons(user.customUser.id);
+  }, []);
+
+  const getLessons = async (id) => {
+    const a = await axios
+      .get(GET_LESSONS + id, {
+        headers: { Authorization: `Bearer ${tokenValue}` },
+      })
+      .then(
+        (responce) => {
+          setLessons(responce.data);
+          return responce.data;
+        },
+        (error) => {
+          console.error("Error while fetching lessons:", error);
+        }
+      );
+    return a;
+  };
+
+  const filteredLessons = lessons.filter((lesson) => {
+    const statusMatch = statusFilter
+      ? lesson.isSuccessful.toString() === statusFilter
+      : true;
+    const termMatch = lesson.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return statusMatch && termMatch;
+  });
+
+  const handleAddLesson = () => {
+    navigate("../lessons/create", { replace: true });
+    console.log("Add lesson button clicked");
+  };
+
+  const expandLesson = async (lesson) => {
+    setSelectedLesson(lesson);
+    if (lesson.isSuccessful) {
+      const test = await getLessonTestings(lesson.id, tokenValue);
+      setLessonTestings(test[test.length - 1]);
+    } else {
+      setLessonTestings(null);
+    }
+    setModalOpen(true);
+  };
+
+  return (
+    <Container fluid>
+      <Row>
+        <Col md={12}>
+          <Form className="my-3 d-flex justify-content-between align-items-center">
+            <div className="d-flex">
+              <Form.Label className="mr-2">{t("Filter by Status")}:</Form.Label>
+
+              <Form.Control
+                as="select"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="ml-3 mr-3"
+                style={{ width: "150px" }}
+              >
+                <option value="">{t("All")}</option>
+                <option value="true">{t("Completed")}</option>
+                <option value="false">{t("Incomplete")}</option>
+              </Form.Control>
+            </div>
+            <div className="ml-3">
+              <Form.Control
+                type="text"
+                placeholder={t("Search by name")}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ width: "350px" }}
+              />
+            </div>
+            {user.roles.length == 2 ? (
+              <Button onClick={handleAddLesson} variant="success">
+                {t("Add New Lesson")}
+              </Button>
+            ) : null}
+          </Form>
+        </Col>
+        <Col md={6} className="my-3 d-flex"></Col>
+      </Row>
+
+      <Row>
+        {filteredLessons.sort((a, b) => a.id - b.id).map((lesson) => (
+          <Col sm={3} key={lesson.id}>
+            <Card style={{ width: "300px" }}>
+              <Card.Body>
+                <Card.Title>{lesson.name}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                  {t("Starts at")}:{" "}
+                  {new Date(lesson.date).toLocaleString(t("locale"), {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </Card.Subtitle>
+                <Card.Text>
+                  {t("Duration")}: {lesson.duration} {t("min")}.
+                </Card.Text>
+                <Card.Text>
+                  {t("Status")}:{" "}
+                  {lesson.isSuccessful ? t("Completed") : t("Incomplete")}
+                </Card.Text>
+                <Button variant="primary" onClick={() => expandLesson(lesson)}>
+                  {" "}
+                  {t("Go to lesson")}
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+      <ModalLessonForm
+        isOpen={isModalOpen}
+        closeModal={() => setModalOpen(false)}
+        selectedLesson={selectedLesson}
+        lessonTesting={lessonTesting}
+        styles={styles}
+        t={t}
+      />
+    </Container>
+  );
+};
+
+export default LessonList;
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\SensorsList\sensor.response.js**
+```
+import axios from "axios";
+
+export const getSensors = async (tokenValue) => {
+  const GET_SENSORS = "http://127.0.0.1:8080/sensor/admin/all";
+
+  const respond = await axios.get(GET_SENSORS, {
+    headers: {
+      Authorization: "Bearer " + tokenValue,
+    },
+  });
+  return respond.data;
+};
+
+export const putSensor = async (selectedSensor, tokenValue) => {
+  const responseBody = {
+    name: selectedSensor.name,
+    maxHeartRateValue: selectedSensor.maxHeartRateValue,
+    maxDepth: selectedSensor.maxDepth,
+    maxTime: selectedSensor.maxTime,
+  };
+  
+  const PUT_SENSOR = `http://localhost:8080/sensor/admin/${selectedSensor.id}`;
+
+  await axios
+    .put(PUT_SENSOR, responseBody, {
+      headers: {
+        Authorization: "Bearer " + tokenValue,
+      },
+    })
+    .catch((error) => {
+      console.error("Error while putting sensor:", error);
+    });
+};
+
+export const deleteSensor = async (sensorId, tokenValue) => {
+  await axios
+    .delete(`http://localhost:8080/sensor/admin/${sensorId}`, {
+      headers: {
+        Authorization: "Bearer " + tokenValue,
+      },
+    })
+    .catch((error) => {
+      console.error("Error while posting sensor:", error);
+    });
+};
+
+export const handleInputChange = (e, field, setSelectedSensor) => {
+  const value = e.target.value;
+  setSelectedSensor((prevSensor) => ({
+    ...prevSensor,
+    [field]: value,
+  }));
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\SensorsList\SensorList.jsx**
+```
+import { deleteSensor, getSensors, handleInputChange, putSensor } from "./sensor.response";
+import { getSortIcon, sortList } from "../list.sort";
+import { useEffect, useState } from "react";
+
+import { ButtonBox } from "../../utils/ButtonBox/ButtonBox";
+import { ModalSensorForm } from "../../utils/ModalSensorForm/ModalSensorForm";
+import styles from "../list.module.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+const createCertsBtn = {
+  style: {
+    width: "220px",
+    fontSize: "28px",
+  },
+};
+
+export const SensorList = () => {
+  const { tokenValue } = useSelector((s) => s.auth);
+  const [sensor, setSensor] = useState([]);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const [selectedSensor, setSelectedSensor] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [sortColumn, setSortColumn] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
+
+  useEffect(() => {
+    const start = async () => {
+      const respond = await getSensors(tokenValue)
+
+      setSensor(respond);
+    };
+
+    start();
+  }, []);
+
+  const handleSubmit = async () => {
+    await putSensor(selectedSensor, tokenValue)
+    setModalOpen(false)
+  };
+
+  const handleNameChange = (e) => {
+    handleInputChange(e, "name", setSelectedSensor)
+  };
+
+  const handleHeartRateChange = (e) => {
+    handleInputChange(e, "maxHeartRateValue", setSelectedSensor)
+  };
+
+  const handleDepthChange = (e) => {
+    handleInputChange(e, "maxDepth", setSelectedSensor)
+  };
+
+  const handleTimeChange = (e) => {
+    handleInputChange(e, "maxTime", setSelectedSensor)
+  };
+
+  const handleCreateSensor = () => {
+    navigate("../sensors/create", { replace: true });
+  };
+
+  const handleUpdateSensor = (sensor) => {
+    setSelectedSensor(sensor);
+    setModalOpen(true);
+  };
+
+  const handleDeleteSensor = async (sensor) => {
+    deleteSensor(sensor, tokenValue);
+  };
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortColumn(column);
+      setSortDirection("ASC");
+    }
+  };
+
+  const sortedSensors = sortList(sensor, sortColumn, sortDirection);
+
+  return (
+    <div className={styles.container}>
+      <h2>{t("sensors")}</h2>
+      <table className="table table-striped table-bordered">
+        <thead className="thead-dark">
+        <tr>
+            <th onClick={() => handleSort("id")}>
+              {t("id")}
+              {getSortIcon("id", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("name")}>
+              {t("name")}
+              {getSortIcon("name", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("maxDepth")}>
+              {t("max_depth")}
+              {getSortIcon("maxDepth", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("maxHeartRateValue")}>
+              {t("max_heart_rate")}
+              {getSortIcon("maxHeartRateValue", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("maxTime")}>
+              {t("max_time")}
+              {getSortIcon("maxTime", sortColumn, sortDirection)}
+            </th>
+            <th>{t("update")}</th>
+            <th>{t("delete")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedSensors.map((s) => (
+            <tr key={"w-" + s.id}>
+              <td>{s.id}</td>
+              <td>{s.name}</td>
+              <td>{s.maxDepth}</td>
+              <td>{s.maxHeartRateValue}</td>
+              <td>{s.maxTime}</td>
+              <td>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleUpdateSensor(s)}
+                >
+                  {t("update")}
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteSensor(s)}
+                >
+                  {t("delete")}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ButtonBox
+        text={t("create_sensor")}
+        settings={{
+          ...createCertsBtn,
+          onClick: handleCreateSensor,
+        }}
+      />
+      <ModalSensorForm
+        isOpen={isModalOpen}
+        closeModal={() => setModalOpen(false)}
+        handleSubmit={handleSubmit}
+        selectedSensor={selectedSensor}
+        handleNameChange={handleNameChange}
+        handleHeartRateChange={handleHeartRateChange}
+        handleDepthChange={handleDepthChange}
+        handleTimeChange={handleTimeChange}
+        styles={styles}
+        t={t}
+      />
+    </div>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\UsersList\user.response.js**
+```
+import axios from "axios";
+
+export const updateUser = async (selectedUser, tokenValue) => {
+  const responseBody = {
+    name: selectedUser.name,
+    birthDate: selectedUser.birthDate,
+    placeOfResidence: selectedUser.placeOfResidence,
+    diveClub: selectedUser.diveClub,
+  };
+
+  await axios
+    .put(`http://localhost:8080/custom_user/${selectedUser.id}`, responseBody, {
+      headers: {
+        Authorization: "Bearer " + tokenValue,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error while putting user:", error);
+    });
+};
+
+export const handleInputChange = (e, field, setSelectedUser) => {
+  const value = e.target.value;
+  setSelectedUser((prevUser) => ({
+    ...prevUser,
+    [field]: value,
+  }));
+};
+
+export const handleSelectInputChange = (e, field, setSelectedUser) => {
+  const value = e.target.value;
+  setSelectedUser((prevUser) => ({
+    ...prevUser,
+    [field]: {
+      ...prevUser.field,
+      id: value,
+    },
+  }));
+};
+
+export const deleteUser = async (user, tokenValue) => {
+    if (confirm("Are you sure you want to delete this user?")) {
+      try {
+        await axios.delete(`http://localhost:8080/custom_user/admin/${user.id}`, {
+          headers: {
+            Authorization: "Bearer " + tokenValue,
+          },
+        });
+        window.location.reload();
+      } catch (error) {
+        console.error("Error while deleting user:", error);
+      }
+    }
+  };
+
+
+  export const getUsers = async (tokenValue) => {
+    const GET_USERS = "http://127.0.0.1:8080/custom_user/admin/all";
+    try {
+      const response = await axios.get(GET_USERS, {
+        headers: {
+          Authorization: "Bearer " + tokenValue,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error while getting users:", error);
+    }
+  };
+
+  export const getUser = async (id, tokenValue) => {
+    const GET_USER = `http://localhost:8080/custom_user/${id}`;
+    try {
+      const response = await axios.get(GET_USER, {
+        headers: {
+          Authorization: "Bearer " + tokenValue,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error while getting users:", error);
+    }
+  };
+
+  export const getClubs = async (tokenValue) => {
+    const GET_DIVECLUBS = "http://127.0.0.1:8080/dive_club/admin/all";
+    try {
+      const response = await axios.get(GET_DIVECLUBS, {
+        headers: {
+          Authorization: "Bearer " + tokenValue,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error while getting clubs:", error);
+    }
+  };
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\users\UsersList\UserList.jsx**
+```
+import "../list.module.css";
+
+import React, { useEffect, useState } from "react";
+import {
+  deleteUser,
+  getClubs,
+  getUsers,
+  handleInputChange,
+  handleSelectInputChange,
+  updateUser,
+} from "./user.response";
+import { getSortIcon, sortList } from "../list.sort";
+
+import { ButtonBox } from "../../utils/ButtonBox/ButtonBox";
+import { ModalUserForm } from "../../utils/ModalUserForm/ModalUserForm";
+import styles from "../list.module.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+const createUserBtn = {
+  style: {
+    width: "220px",
+    fontSize: "28px",
+  },
+};
+
+export const UserList = () => {
+  const { tokenValue } = useSelector((s) => s.auth);
+  const [users, setUsers] = useState([]);
+  const [clubs, setClubs] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [sortColumn, setSortColumn] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSortColumn(column);
+      setSortDirection("ASC");
+    }
+  };
+
+  const sortedUsers = sortList(users, sortColumn, sortDirection);
+
+  //////
+
+  useEffect(() => {
+    const start = async () => {
+      const usersData = await getUsers(tokenValue);
+      const clubsData = await getClubs(tokenValue);
+
+      setUsers(usersData);
+      setClubs(clubsData);
+    };
+
+    start();
+  }, []);
+
+  const handleSubmit = async () => {
+    await updateUser(selectedUser, tokenValue);
+    setModalOpen(false);
+  };
+
+  const handleNameChange = (e) => {
+    handleInputChange(e, "name", setSelectedUser);
+  };
+
+  const handlePlaceChange = (e) => {
+    handleInputChange(e, "placeOfResidence", setSelectedUser);
+  };
+
+  const handleClubChange = (e) => {
+    handleSelectInputChange(e, "diveClub", setSelectedUser);
+  };
+
+  const handleCreateWorker = () => {
+    navigate("../users/create", { replace: true });
+  };
+
+  const handleUpdateUser = (user) => {
+    setSelectedUser(user);
+    setModalOpen(true);
+  };
+
+  const handleDeleteUser = async (user) => {
+    deleteUser(user, tokenValue);
+  };
+
+  return (
+    <div className={styles.container}>
+      <h2>{t("users")}</h2>
+      <table className="table table-striped table-bordered">
+        <thead className="thead-dark">
+          <tr>
+            <th onClick={() => handleSort("id")}>
+              {t("id")}
+              {getSortIcon("id", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("name")}>
+              {t("name")}
+              {getSortIcon("name", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("placeOfResidence")}>
+              {t("place_of_residence")}
+              {getSortIcon("placeOfResidence", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("birthDate")}>
+              {t("birth_date")}
+              {getSortIcon("birthDate", sortColumn, sortDirection)}
+            </th>
+            <th onClick={() => handleSort("diveClub")}>
+              {t("dive_club")}
+              {getSortIcon("diveClub", sortColumn, sortDirection)}
+            </th>
+            <th>{t("update")}</th>
+            <th>{t("delete")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedUsers.map((u) => (
+            <tr key={"w-" + u.id}>
+              <td>{u.id}</td>
+              <td>{u.name}</td>
+              <td>{u.placeOfResidence}</td>
+              <td>{u.birthDate}</td>
+              <td>{u.diveClub === null ? null : u.diveClub.id}</td>
+              <td>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleUpdateUser(u)}
+                >
+                  {t("update")}
+                </button>
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteUser(u)}
+                >
+                  {t("delete")}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ButtonBox
+        text={t("create_user")}
+        settings={{
+          ...createUserBtn,
+          onClick: handleCreateWorker,
+        }}
+      />
+
+      <ModalUserForm
+        isOpen={isModalOpen}
+        closeModal={() => setModalOpen(false)}
+        handleSubmit={handleSubmit}
+        selectedUser={selectedUser}
+        handleNameChange={handleNameChange}
+        handlePlaceChange={handlePlaceChange}
+        handleClubChange={handleClubChange}
+        clubs={clubs}
+        t={t}
+      />
+    </div>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\ButtonBox\button.box.module.css**
+```
+.btn{
+    background-color: var(--main-color);
+    color: var(--main-light-background-color);
+    outline: none;
+    border: none;
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 10px;
+    transition: .3s;
+}
+
+.btn:hover{
+    background-color: var(--main-some-light-color);
+    transition: .3s;
+}
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\ButtonBox\ButtonBox.jsx**
+```
+import styles from './button.box.module.css'
+export const ButtonBox = ({text = "text", settings = {}}) => {
+    return (
+        <button className={styles.btn} {...settings}>{text}</button>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\InputBox\input.box.module.css**
+```
+.inputBox {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    row-gap: 1px;
+}
+
+.inputBox input {
+    width: auto;
+    font-size: 20px;
+    padding: 5px 10px;
+    color: var(--main-some-light-color);
+    border: 2px solid var(--main-color);
+    outline: none;
+    border-radius: 15px;
+}
+
+.inputBox label {
+    padding-left: 14px;
+    font-size: 24px;
+    color: var(--main-color);
+}
+
+.inputBox input:hover,
+.inputBox input:focus{
+    border: 2px solid var(--main-light-color);
+}
+
+.inputBox label:hover{
+    color: var(--main-light-color);
+}
+
+
+
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\InputBox\InputBox.jsx**
+```
+import styles from "./input.box.module.css";
+
+const InputBox = ({inputParam, labelText = '', name ='', labelParam, placeholder, type, value, onChange}) => {
+    return (
+        <div className={styles.inputBox}>
+            <label {...labelParam}>{labelText}</label>
+            <input placeholder={placeholder} type={type} name={name} {...inputParam} value={value} onChange={onChange}/>
+
+        </div>
+    )
+}
+
+export default InputBox
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\ModalCertificateForm\ModalCertificateForm.jsx**
+```
+import { Button, Form, Modal } from 'react-bootstrap';
+
+export const ModalCertificateForm = ({
+  isOpen,
+  closeModal,
+  handleSubmit,
+  selectedCert,
+  handleUserChange,
+  handleInstructorChange,
+  styles,
+  users,
+  admins,
+  t,
+}) => {
+  return (
+    <Modal show={isOpen} onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("update_cert")}</Modal.Title>
+      </Modal.Header>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Body>
+          <Form.Group controlId="user">
+            <Form.Label>{t("user")}</Form.Label>
+            <Form.Control
+              as="select"
+              value={selectedCert?.customUser?.id || ""}
+              onChange={handleUserChange}
+            >
+              <option value="">{t("select_user")}</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.id} - {user.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="intructor">
+            <Form.Label>{t("instructor")}</Form.Label>
+            <Form.Control
+              as="select"
+              value={selectedCert?.instructor?.id || ""}
+              onChange={handleInstructorChange}
+            >
+              <option value="">{t("select_intructor")}</option>
+              {admins.map((admin) => (
+                <option key={admin.id} value={admin.id}>
+                  {admin.id} - {admin.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" type="submit">
+            {t("submit")}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\ModalClubForm\ModalClubForm.jsx**
+```
+import { Button, Form, Modal } from "react-bootstrap";
+
+export const ModalClubForm = ({
+  isOpen,
+  closeModal,
+  handleSubmit,
+  selectedClub,
+  handleNameChange,
+  handleAddressChange,
+  handleCityChange,
+  handleCountryChange,
+  t,
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <Modal show={isOpen} onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("update_club")}</Modal.Title>
+      </Modal.Header>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Body>
+          <Form.Group controlId="name">
+            <Form.Label>{t("name")}</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              value={selectedClub ? selectedClub.name : ""}
+              onChange={handleNameChange}
+              minLength={3}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="country">
+            <Form.Label>{t("country")}</Form.Label>
+            <Form.Control
+              type="text"
+              name="country"
+              value={selectedClub ? selectedClub.country : ""}
+              onChange={handleCountryChange}
+              minLength={3}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="city">
+            <Form.Label>{t("city")}</Form.Label>
+            <Form.Control
+              type="text"
+              name="city"
+              value={selectedClub ? selectedClub.city : ""}
+              onChange={handleCityChange}
+              minLength={3}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="address">
+            <Form.Label>{t("address")}</Form.Label>
+            <Form.Control
+              type="text"
+              name="address"
+              value={selectedClub ? selectedClub.address : ""}
+              onChange={handleAddressChange}
+              minLength={3}
+              required
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" type="submit">
+            {t("submit")}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\ModalLessonForm\ModalLessonForm.jsx**
+```
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import { Button, Modal } from "react-bootstrap";
+import { btnSize, inputSize } from "../../../utils/ui.utils";
+
+import InputBox from "../InputBox/InputBox";
+
+export const ModalLessonForm = ({
+  isOpen,
+  closeModal,
+  selectedLesson,
+  lessonTesting,
+  styles,
+  t,
+}) => {
+  return (
+    <Modal show={isOpen} onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("lesson")}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="form-group">
+          <label htmlFor="name" className="form-label">
+            {t("name")}:
+          </label>
+          <p className="form-text">
+            {selectedLesson !== null ? selectedLesson.name : ""}
+          </p>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="task" className="form-label">
+            {t("task")}:
+          </label>
+          <p className="form-text">
+            {selectedLesson !== null ? selectedLesson.task : ""}
+          </p>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="date" className="form-label">
+            {t("date")}:
+          </label>
+          <p className="form-text">
+            {selectedLesson !== null
+              ? new Date(selectedLesson.date).toLocaleString(t("locale"), {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })
+              : ""}
+          </p>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="duration" className="form-label">
+            {t("duration")}:
+          </label>
+          <p className="form-text">
+            {selectedLesson !== null ? selectedLesson.duration : ""}
+          </p>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="instructor" className="form-label">
+            {t("instructor")}:
+          </label>
+          <p className="form-text">
+            {selectedLesson !== null ? selectedLesson.instructor.name : ""}
+          </p>
+        </div>
+
+        {lessonTesting !== null && (
+          <div className="form-group">
+            <label htmlFor="lesson_test" className="form-label">
+              {t("lesson_test")}:
+            </label>
+            <p className="form-text">Depth: {lessonTesting.depth} m</p>
+            <p className="form-text">Heart Rate Value: {lessonTesting.heartRateValue} bpm</p>
+            <p className="form-text">Time: {lessonTesting.time} min</p>
+          </div>
+        )}
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+//   if (!isOpen) return null;
+
+//   return (
+//     <div className="modal">
+//     <div className="modal-content container">
+//         <div className="modal-header">
+//           <h2>{t("lesson")}</h2>
+//         </div>
+
+//         <form onSubmit={closeModal}>
+//           <div className="modal-body">
+
+//             <div className="form-group">
+//               <label htmlFor="name" className="form-label">{t("name")}:</label>
+//               <p className="form-text">{selectedLesson !== null ? selectedLesson.name : ""}</p>
+//             </div>
+
+//             <div className="form-group">
+//               <label htmlFor="task" className="form-label">{t("task")}:</label>
+//               <p className="form-text">{selectedLesson !== null ? selectedLesson.task : ""}</p>
+//             </div>
+
+//             <div className="form-group">
+//               <label htmlFor="date" className="form-label">{t("date")}:</label>
+//               <p className="form-text">{selectedLesson !== null ? selectedLesson.date : ""}</p>
+//             </div>
+
+//             <div className="form-group">
+//               <label htmlFor="duration" className="form-label">{t("duration")}:</label>
+//               <p className="form-text">{selectedLesson !== null ? selectedLesson.duration : ""}</p>
+//             </div>
+
+//             <div className="form-group">
+//               <label htmlFor="instructor" className="form-label">{t("instructor")}:</label>
+//               <p className="form-text">{selectedLesson !== null ? selectedLesson.instructor.name : ""}</p>
+//             </div>
+
+//             {lessonTesting !== null && (
+//               <div className="form-group">
+//                 <label htmlFor="lesson_test" className="form-label">{t("lesson_test")}:</label>
+//                 <p className="form-text">{lessonTesting.depth}</p>
+//                 <p className="form-text">{lessonTesting.heartRateValue}</p>
+//                 <p className="form-text">{lessonTesting.time}</p>
+//               </div>
+//             )}
+
+//           </div>
+//         </form>
+
+//         <div className="modal-footer">
+//           <button className="btn btn-primary" onClick={closeModal}>
+//             {t("back")}
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+//};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\ModalSensorForm\ModalSensorForm.jsx**
+```
+import { Button, Form, Modal } from "react-bootstrap";
+
+export const ModalSensorForm = ({
+  isOpen,
+  closeModal,
+  handleSubmit,
+  selectedSensor,
+  handleNameChange,
+  handleHeartRateChange,
+  handleDepthChange,
+  handleTimeChange,
+  styles,
+  t,
+}) => {
+  return (
+    <Modal show={isOpen} onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("update_sensor")}</Modal.Title>
+      </Modal.Header>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Body>
+          <Form.Group controlId="name">
+            <Form.Label>{t("name")}</Form.Label>
+            <Form.Control
+              type="text"
+              value={selectedSensor?.name || ""}
+              onChange={handleNameChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="heartRate">
+            <Form.Label>{t("max_heart_rate")}</Form.Label>
+            <Form.Control
+              type="text"
+              value={selectedSensor?.maxHeartRateValue || ""}
+              onChange={handleHeartRateChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="depth">
+            <Form.Label>{t("max_depth")}</Form.Label>
+            <Form.Control
+              type="text"
+              value={selectedSensor?.maxDepth || ""}
+              onChange={handleDepthChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="time">
+            <Form.Label>{t("max_time")}</Form.Label>
+            <Form.Control
+              type="text"
+              value={selectedSensor?.maxTime || ""}
+              onChange={handleTimeChange}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" type="submit">
+            {t("submit")}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\ModalUserForm\ModalUserForm.jsx**
+```
+import { Button, Form, Modal } from "react-bootstrap";
+
+export const ModalUserForm = ({
+  isOpen,
+  closeModal,
+  handleSubmit,
+  selectedUser,
+  handleNameChange,
+  handlePlaceChange,
+  handleClubChange,
+  clubs,
+  t,
+}) => {
+  return (
+    <Modal show={isOpen} onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("update_user")}</Modal.Title>
+      </Modal.Header>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Body>
+          <Form.Group controlId="name">
+            <Form.Label>{t("name")}:</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              value={selectedUser !== null ? selectedUser.name : ""}
+              onChange={handleNameChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="place">
+            <Form.Label>{t("place_of_residence")}:</Form.Label>
+            <Form.Control
+              type="text"
+              name="place"
+              value={selectedUser !== null ? selectedUser.placeOfResidence : ""}
+              onChange={handlePlaceChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="club">
+            <Form.Label>{t("dive_club")}:</Form.Label>
+            <Form.Control
+              as="select"
+              name="diveClubId"
+              value={
+                selectedUser === null ||
+                selectedUser.diveClub === null ||
+                typeof selectedUser.diveClub === "undefined"
+                  ? ""
+                  : selectedUser.diveClub.id || ""
+              }
+              onChange={handleClubChange}
+            >
+              <option value="">{t("select_club")}</option>
+              {clubs !== null &&
+                clubs.map((club) => (
+                  <option key={club.id} value={club.id}>
+                    {club.id}
+                  </option>
+                ))}
+            </Form.Control>
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className="btn btn-primary" type="submit">
+            {t("submit")}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
+  );
+};
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\NavBar\nav.bar.module.css**
+```
+
+.container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: row;
+    column-gap: 30px;
+    /* margin-top: 20px; */
+    background-color: var(--main-color);
+    padding: 10px;
+}
+
+.link{
+    text-decoration: none;
+    color: var(--main-light-background-color);
+    font-size: 24px;
+    padding: 4px;
+    transition: .3s;
+}
+
+.link:hover{
+    font-size: 28px;
+    padding: 0;
+    transition: .3s;
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\NavBar\NavBar.jsx**
+```
+import {useDispatch, useSelector} from "react-redux";
+
+import {Link} from "react-router-dom";
+import { SelectAdminBar } from "../SelectAdminBar/SelectAdminBar";
+import { SelectLang } from "../SelectLang/SelectLang";
+import {logout} from "../../../reducers/auth.reducer";
+import styles from './nav.bar.module.css'
+import {useTranslation} from "react-i18next";
+
+const NavBar = () => {
+    const dispatch = useDispatch()
+    const {user} = useSelector(s => s.auth)
+    const {t} = useTranslation()
+
+
+    const handleLogOut = () => {
+        dispatch(logout())
+    }
+    // TODO: user.roles
+    return (
+        <nav className={styles.container}>
+            <Link className={styles.link} to={'../home'} replace={true} >DiveLicencePro</Link>
+            <SelectLang/>
+            {user.roles.length == 2 ? <SelectAdminBar/> : null}
+            {/* <SelectAdminBar/> */}
+            <Link className={styles.link} to={'../lessons'} replace={true} >{t('lessons')}</Link>
+            <Link className={styles.link} to={'../profile'} replace={true} >{user.username}</Link>
+            <Link className={styles.link} to={null} onClick={handleLogOut}>{t('log_out')}</Link>
+            
+        </nav>
+    )
+}
+
+export default NavBar
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\SelectAdminBar\select.leng.module.css**
+```
+.box{
+    border: none;
+    outline: none;
+    color: var(--main-light-background-color);
+    background: var(--main-color);
+    font-size: 24px;
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\SelectAdminBar\SelectAdminBar.jsx**
+```
+import styles from "./select.leng.module.css";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+export const SelectAdminBar = () => {
+  const [option, setOption] = useState("default");
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const handleChange = async ({ target: { value } }) => {
+    setOption(value);
+
+    switch (value) {
+      case "admin":
+        navigate("/admin");
+        break;
+      case "users":
+        navigate("/users");
+        break;
+      case "dive_clubs":
+        navigate("/clubs");
+        break;
+      case "certificates":
+        navigate("/certificates");
+        break;
+      case "sensors":
+        navigate("/sensors");
+        break;
+      default:
+        navigate("/admin");
+        break;
+    }
+  };
+
+  return (
+    <select value={option} onChange={handleChange} className={styles.box}>
+      <option value={"admin"}>{t("admin")}</option>
+      <option value={"users"}>{t("users")}</option>
+      <option value={"dive_clubs"}>{t("clubs")}</option>
+      <option value={"certificates"}>{t("certs")}</option>
+      <option value={"sensors"}>{t("sensors")}</option>
+    </select>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\SelectLang\select.leng.module.css**
+```
+.box{
+    border: none;
+    outline: none;
+    color: var(--main-light-background-color);
+    background: var(--main-color);
+    font-size: 24px;
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\components\utils\SelectLang\SelectLang.jsx**
+```
+import i18n from 'i18next';
+import {useState} from "react";
+import styles from './select.leng.module.css'
+import {LANG_KEY} from "../../../i18next";
+export const SelectLang = () => {
+    const [lang, setLang] = useState(i18n.language)
+    const handleChange = async ({target: {value}}) => {
+        setLang(value)
+        await i18n.changeLanguage(value);
+        localStorage.setItem(LANG_KEY, value)
+    }
+
+    return (
+        <select value={lang} onChange={handleChange} className={styles.box}>
+            <option value={'en'}>EN</option>
+            <option value={'ua'}>UA</option>
+        </select>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\hooks\useWindowSize.js**
+```
+import {useState, useEffect} from "react";
+
+// hook to get window size dynamically
+const useWindowSize = () => {
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+        width: undefined,
+        height: undefined
+    });
+
+    useEffect(() => {
+        // only execute all the code below in client side
+        if (typeof window !== "undefined") {
+            // Handler to call on window resize
+            function handleResize() {
+                // Set window width/height to state
+                setWindowSize({
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                });
+            }
+
+            // Add event listener
+            window.addEventListener("resize", handleResize);
+
+            // Call handler right away so state gets updated with initial window size
+            handleResize();
+
+            // Remove event listener on cleanup
+            return () => window.removeEventListener("resize", handleResize);
+        }
+    }, []); // Empty array ensures that effect is only run on mount
+    return windowSize;
+};
+
+export {useWindowSize};
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\AdminPage.jsx**
+```
+import Center from "../components/layout/Center/Center";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+const linkStyle = {
+    display: 'block',
+    textDecoration: 'none',
+    color: 'black',
+    backgroundColor: '#ddd',
+    padding: '10px',
+    margin: '5px 0',
+    borderRadius: '5px',
+    textAlign: 'center',
+};
+
+export const AdminPage = () => {
+    const { t } = useTranslation();
+    return (
+        <Center useFreeHeightSpace={true}>
+            <Link style={linkStyle} to="/users">{t("users")}</Link>
+            <Link style={linkStyle} to="/clubs">{t("clubs")}</Link>
+            <Link style={linkStyle} to="/sensors">{t("sensors")}</Link>
+            <Link style={linkStyle} to="/certificates">{t("certificates")}</Link>
+        </Center>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\CreateCertificatePage.jsx**
+```
+import React, { useState } from 'react';
+
+import Center from "../components/layout/Center/Center";
+import { CreateCertificateForm } from '../components/postForms/CreateCertificateForm';
+import axios from "axios";
+import formDataUtils from "../utils/form.data.utils";
+import {useNavigate} from "react-router-dom";
+
+export const CreateCertificatePage = () => {
+
+    const token = sessionStorage.getItem('token');
+    const navigate = useNavigate()
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const cert = formDataUtils.toObject(e.target)
+
+
+        const currentDate = new Date();
+
+// Extract year, month, and day
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+
+// Format the date as "yyyy-dd-mm"
+        const formattedDate = `${year}-${month}-${day}`;
+
+        const responseBody = {
+            "name" : cert.name,
+            "date": formattedDate,
+            "numberOfSuccessfulLessonsToGet" : cert.numberOfSuccessfulLessonsToGet,
+            "maxDepth" : cert.maxDepth,
+            "isCompleted" : false
+        }     
+        
+            axios.post("http://127.0.0.1:8080/certificate/admin", responseBody, { headers: { Authorization: `Bearer ${token}`}})
+            .then((response) => {      
+                return response.data
+            })
+            .catch((error) => {
+              console.error("Error while posting user:", error);
+            });
+            
+        navigate('../certificates', {replace:true})
+    }
+
+
+    return (
+        <Center useFreeHeightSpace={true}>
+            <form onSubmit={handleSubmit}>
+                <CreateCertificateForm/>
+            </form>
+        </Center>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\CreateClubPage.jsx**
+```
+import Center from "../components/layout/Center/Center";
+import { CreateClubForm } from '../components/postForms/CreateClubForm';
+import React from 'react';
+import axios from "axios";
+import formDataUtils from "../utils/form.data.utils";
+import {useNavigate} from "react-router-dom";
+
+export const CreateClubPage = () => {
+
+    //const [customUserId, setÑustomUserId] = useState();
+    const token = sessionStorage.getItem('token');
+    const navigate = useNavigate()
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const club = formDataUtils.toObject(e.target)
+
+        const responseBody = {
+            "name": club.name,
+            "address": club.adress,
+            "city": club.city,
+            "country": club.country
+        }     
+        
+            axios.post("http://127.0.0.1:8080/dive_club/admin", responseBody, { headers: { Authorization: `Bearer ${token}`}})
+            .then((response) => {      
+                return response.data
+            })
+            .catch((error) => {
+              console.error("Error while posting user:", error);
+            });
+            
+        navigate('../clubs', {replace:true})
+    }
+
+
+    return (
+        <Center useFreeHeightSpace={true}>
+            <form onSubmit={handleSubmit}>
+                <CreateClubForm/>
+            </form>
+        </Center>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\CreateLessonPage.jsx**
+```
+import Center from "../components/layout/Center/Center";
+import { CreateLessonForm } from "../components/postForms/CreateLessonForm";
+import React from "react";
+import axios from "axios";
+import formDataUtils from "../utils/form.data.utils";
+import { getUser } from "../components/users/UsersList/user.response";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+export const CreateLessonPage = () => {
+  //const [customUserId, setÑustomUserId] = useState();
+  const token = sessionStorage.getItem("token");
+  const navigate = useNavigate();
+
+  const { tokenValue } = useSelector((s) => s.auth);
+  const { user } = useSelector((s) => s.auth);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const lesson = formDataUtils.toObject(e.target);
+    const userData = await getUser(lesson.user, tokenValue);
+    const instructor = await getUser(user.customUser.id, tokenValue);
+    const responseBody = {
+      name: lesson.name,
+      task: lesson.task,
+      date: lesson.date,
+      isSuccessful: false,
+      duration: lesson.duration,
+    };
+
+    axios
+      .post("http://localhost:8080/lesson/admin", responseBody, {
+        headers: {
+          Authorization: `Bearer ${tokenValue}`,
+        },
+      })
+      .then((response) => {
+        const lessonId = response.data.id;
+        setTimeout(() => {
+            axios
+              .put(
+                `http://127.0.0.1:8080/lesson/admin/${lessonId}/user/${userData.id}/instructor/${instructor.id}`,
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+              )
+              .then((response) => {
+                return response.data;
+              })
+              .catch((error) => {
+                console.error("Error while putting lesson:", error);
+              });
+          }, 1000);
+      })
+      .catch((error) => {
+        console.error("Error while posting lesson:", error);
+      });
+
+    navigate("../lessons", { replace: true });
+  };
+
+  return (
+    <Center useFreeHeightSpace={true}>
+      <form onSubmit={handleSubmit}>
+        <CreateLessonForm />
+      </form>
+    </Center>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\CreateSensorPage.jsx**
+```
+import React, { useState } from 'react';
+
+import Center from "../components/layout/Center/Center";
+import { CreateSensorForm } from '../components/postForms/CreateSensorForm';
+import axios from "axios";
+import formDataUtils from "../utils/form.data.utils";
+import {useNavigate} from "react-router-dom";
+
+export const CreateSensorPage = () => {
+
+    const token = sessionStorage.getItem('token');
+    const navigate = useNavigate()
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const sensor = formDataUtils.toObject(e.target)
+
+        const responseBody = {
+            "name": sensor.name,
+            "maxHeartRateValue": sensor.heartRate,
+            "maxDepth": sensor.depth,
+            "maxTime": sensor.time
+        }     
+        
+            axios.post("http://127.0.0.1:8080/sensor/admin", responseBody, { headers: { Authorization: `Bearer ${token}`}})
+            .then((response) => {      
+                return response.data
+            })
+            .catch((error) => {
+              console.error("Error while posting user:", error);
+            });
+            
+        navigate('../sensors', {replace:true})
+    }
+
+
+    return (
+        <Center useFreeHeightSpace={true}>
+            <form onSubmit={handleSubmit}>
+                <CreateSensorForm/>
+            </form>
+        </Center>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\CreateUserPage.jsx**
+```
+import React, { useState } from "react";
+
+import Center from "../components/layout/Center/Center";
+import { UserSignUp } from "../components/auth/UserSingUp/UserSingUp";
+import axios from "axios";
+import formDataUtils from "../utils/form.data.utils";
+import { useNavigate } from "react-router-dom";
+
+export const CreateUserPage = () => {
+  const [customUserId, setÑustomUserId] = useState();
+  const token = sessionStorage.getItem("token");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const user = formDataUtils.toObject(e.target);
+
+    if (user.password !== user.password_two) {
+      alert("Password is different");
+      return;
+    }
+
+    const responseBody = {
+      birthDate: user.birth_date,
+      name: user.name,
+      placeOfResidence: user.place_of_residence,
+    };
+
+    const singUpData = {
+      email: user.email,
+      password: user.password,
+    };
+
+    axios.post("http://127.0.0.1:8080/profile/register", singUpData).then(
+      (responce) => {
+        return responce.data;
+      },
+      (error) => {
+        console.error("Error while posting profile:", error);
+      }
+    );
+
+    axios
+      .post("http://127.0.0.1:8080/custom_user", responseBody, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        const customUserId = response.data.id;
+
+        setÑustomUserId(response.data.id);
+
+        setTimeout(() => {
+          axios
+            .put(
+              `http://127.0.0.1:8080/profile/${user.email}/user/${customUserId}`,
+              {},
+              { headers: { Authorization: `Bearer ${token}` } }
+            )
+            .then((response) => {
+              return response.data;
+            })
+            .then(() => {
+              navigate("../users", { replace: true });
+            })
+            .catch((error) => {
+              console.error("Error while putting profile:", error);
+            });
+        }, 2000);
+      })
+      .catch((error) => {
+        console.error("Error while posting user:", error);
+      });
+
+    navigate("../users", { replace: true });
+  };
+
+  return (
+    <Center useFreeHeightSpace={true}>
+      <form onSubmit={handleSubmit}>
+        <UserSignUp />
+      </form>
+    </Center>
+  );
+};
+
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\HelpPage.jsx**
+```
+import Center from "../components/layout/Center/Center";
+import {Help} from "../components/help/Help";
+
+export const HelpPage = () => {
+    return (
+        <Center useFreeHeightSpace={true}>
+            <Help/>
+        </Center>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\LessonPage.jsx**
+```
+import LessonList from "../components/users/LessonList/LessonList"
+
+export const LessonPage = () => {
+    return (
+        <LessonList/>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\LoginPage.jsx**
+```
+import Center from "../components/layout/Center/Center";
+import {Login} from "../components/auth/Login/Login";
+import {useDispatch} from "react-redux";
+import {fetchToken, fetchUser} from "../clients/auth.client";
+import {login} from "../reducers/auth.reducer";
+import { useNavigate} from "react-router-dom";
+
+export const LoginPage = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+
+    return (
+        <Center useFreeHeightSpace={true}>
+            <form onSubmit={e => handleSubmit(e, dispatch, navigate)}>
+                <Login/>
+            </form>
+        </Center>
+    )
+}
+
+async function handleSubmit(e, dispatch, navigate){
+    e.preventDefault()
+    const userForm = new FormData(e.target)
+    
+    const email = userForm.get('email');
+    const password = userForm.get('password');
+
+    const loginData = {
+        email: email,
+        password: password
+    };
+
+    const token = await fetchToken(loginData)
+
+    if(token === undefined){
+        alert("JWT NOT VALID")
+        return
+    }
+
+    const user = await fetchUser(token, loginData)
+
+    dispatch(login(user, token))
+    navigate('../', { replace: true });
+    window.location.reload();
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\ProfilePage.jsx**
+```
+import { Button, Modal } from "react-bootstrap";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardImage,
+  MDBCardText,
+  MDBCardTitle,
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+} from "mdb-react-ui-kit";
+import React, { useEffect, useState } from "react";
+
+import { SERVICE_URL } from "../clients/app.const";
+import axios from "axios";
+import { updateUserImage } from "../reducers/auth.reducer";
+import { useDispatch } from 'react-redux';
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+
+const GET_LESSONS = SERVICE_URL + "/lesson/count_successful_lessons/";
+const GET_CERTS = SERVICE_URL + "/certificate/user/";
+const GET_LESSON_TESTINGS_BY_USER = "http://localhost:8080/lesson_testing/all/user/";
+
+export default function ProfilePage() {
+  const { t } = useTranslation();
+  const { user } = useSelector((s) => s.auth);
+  const [lessonsCount, setLessonsCount] = useState(0);
+  const [certs, setCerts] = useState(0);
+  const [lessonTestings, setLessonTestings] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
+
+  const token = sessionStorage.getItem("token");
+
+  useEffect(() => {
+    getLessons(user.customUser.id);
+    getCerts(user.customUser.id);
+    getLessonTestingsByUser(user.customUser.id);
+    setImageUrl(user.image);
+  }, []);
+
+  const getLessons = async (id) => {
+    const a = await axios
+      .get(GET_LESSONS + id, { headers: { Authorization: `Bearer ${token}` } })
+      .then(
+        (responce) => {
+          setLessonsCount(responce.data);
+          return responce.data;
+        },
+        (error) => {
+          console.error("Error while fetching lessons:", error);
+        }
+      );
+    return a;
+  };
+
+  const getCerts = async (id) => {
+    return await axios
+      .get(GET_CERTS + id, { headers: { Authorization: `Bearer ${token}` } })
+      .then(
+        (responce) => {
+          setCerts(responce.data);
+          return responce.data;
+        },
+        (error) => {
+          console.error("Error while fetching lessons:", error);
+        }
+      );
+  };
+
+  const getLessonTestingsByUser = async (id) => {
+    const a = await axios
+      .get(GET_LESSON_TESTINGS_BY_USER + id, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(
+        (responce) => {
+          const sortedLessonTestings = responce.data.sort(
+            (a, b) => a.id - b.id
+          );
+          setLessonTestings(sortedLessonTestings);
+          return responce.data;
+        },
+        (error) => {
+          console.error("Error while fetching testings:", error);
+        }
+      );
+    return a;
+  };
+
+  const updateProfileImage = async () => {
+    const response = await axios
+      .put(
+        `http://localhost:8080/profile/${user.email}/image`,
+        { image: imageUrl },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then(
+        (responce) => {
+          dispatch(updateUserImage(imageUrl));
+          setShowModal(false);
+          
+          return responce.data;
+        },
+        (error) => {
+          console.error("Error while fetching profile image:", error);
+        }
+      );
+  };
+
+  return (
+    <div className="h-100" style={{ backgroundColor: "#9de2ff" }}>
+      <MDBContainer>
+        <MDBRow className="justify-content-center">
+          <MDBCol md="9" lg="7" xl="5" className="mt-5">
+            <MDBCard style={{ borderRadius: "15px" }}>
+              <MDBCardBody className="p-4">
+                <div className="d-flex text-black">
+                  <div className="flex-shrink-0">
+                    <MDBCardImage
+                      style={{  height: "180px",width: "180px", borderRadius: "10px" }}
+                      src={user.image ? user.image 
+                      : "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"}
+    
+                      alt="Generic placeholder image"
+                      fluid
+                    />
+
+                    <div className="mt-2">
+                      <Button
+                        variant="primary"
+                        onClick={() => setShowModal(true)}
+                      >
+                        {t("Change Profile Image")}
+                      </Button>
+
+                      <Modal
+                        show={showModal}
+                        onHide={() => setShowModal(false)}
+                      >
+                        <Modal.Header closeButton>
+                          <Modal.Title>Change Profile Image</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <input
+                            type="text"
+                            value={imageUrl}
+                            onChange={(e) => setImageUrl(e.target.value)}
+                            className="form-control"
+                            placeholder="Enter image URL"
+                          />
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button
+                            variant="secondary"
+                            onClick={() => setShowModal(false)}
+                          >
+                            {t("back")}
+                          </Button>
+                          <Button
+                            variant="primary"
+                            onClick={updateProfileImage}
+                          >
+                            {t("update")}
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                    </div>
+                  </div>
+                  <div className="flex-grow-1 ms-3">
+                    <MDBCardTitle>{user.customUser.name}</MDBCardTitle>
+                    <MDBCardText>
+                      {user.customUser.placeOfResidence}
+                    </MDBCardText>
+                    <MDBCardText>
+                      {new Date(user.customUser.birthDate).toLocaleString(
+                        t("locale"),
+                        {
+                          dateStyle: "long",
+                        }
+                      )}
+                    </MDBCardText>
+
+                    <div
+                      className="d-flex justify-content-start rounded-3 p-2 mb-2"
+                      style={{ backgroundColor: "#efefef" }}
+                    >
+                      <div>
+                        <p className="small text-muted mb-1">
+                          {t("successful_lessons")}
+                        </p>
+                        <p className="mb-0">{lessonsCount}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </MDBCardBody>
+            </MDBCard>
+
+            <h3 className="mt-4 mb-4">{t("certificates")}</h3>
+            {Array.isArray(certs) && certs.length > 0 ? (
+              certs.map((cert, index) => (
+                <MDBCard
+                  key={index}
+                  style={{ borderRadius: "15px", marginTop: "20px" }}
+                >
+                  <MDBCardBody className="p-4">
+                    <MDBCardTitle>{cert.name}</MDBCardTitle>
+                    <MDBCardText>
+                      {t("date")}:{" "}
+                      {new Date(cert.date).toLocaleString(t("locale"), {
+                        dateStyle: "long"
+                      })}
+                    </MDBCardText>
+                    <MDBCardText>
+                      {t("number_of_successful_lessons_to_get")}:{" "}
+                      {cert.numberOfSuccessfulLessonsToGet}
+                    </MDBCardText>
+                    <MDBCardText>
+                      {t("max_depth")}: {cert.maxDepth}
+                    </MDBCardText>
+                    <MDBCardText>
+                      {t("completed")}: {cert.isCompleted ? t("yes") : t("no")}
+                    </MDBCardText>
+                  </MDBCardBody>
+                </MDBCard>
+              ))
+            ) : (
+              <p className="mt-4 mb-4">{t("no_data_certificates")}</p>
+            )}
+
+            <h3 className="mt-4 mb-4">{t("statistics")}</h3>
+            {Array.isArray(lessonTestings) && lessonTestings.length > 0 ? (
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  padding: "10px",
+                  borderRadius: "15px",
+                  margin: "15px",
+                }}
+              >
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart
+                    data={lessonTestings}
+                    margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+                  >
+                    <Line
+                      type="monotone"
+                      dataKey="heartRateValue"
+                      stroke="#8884d8"
+                      strokeWidth={4}
+                      name="Heart Rate"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="time"
+                      stroke="#82ca9d"
+                      strokeWidth={4}
+                      name="Time"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="depth"
+                      stroke="#ffc658"
+                      strokeWidth={4}
+                      name="Depth"
+                    />
+                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                    <XAxis dataKey="id" />
+                    <YAxis />
+                    <Tooltip
+                      formatter={(value, name) =>
+                        name === "id" ? `Test: ${value}` : value
+                      }
+                    />
+                    <Legend />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <p>{t("no_data_statistics")}</p>
+            )}
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </div>
+  );
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\ShowCertificatesPage.jsx**
+```
+import { CertificatesList } from "../components/users/CertificatesList/CertificatesList"
+
+export const ShowCertificatesPage = () => {
+    return (
+        <CertificatesList/>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\ShowClubsPage.jsx**
+```
+import { ClubList } from "../components/users/ClubsList/ClubList"
+
+export const ShowClubsPage = () => {
+    return (
+        <ClubList/>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\ShowSensorsPage.jsx**
+```
+import { SensorList } from "../components/users/SensorsList/SensorList"
+
+export const ShowSensorsPage = () => {
+    return (
+        <SensorList/>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\pages\ShowUsersPage.jsx**
+```
+import { UserList } from "../components/users/UsersList/UserList"
+
+export const ShowUsersPage = () => {
+    return (
+        <UserList/>
+    )
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\reducers\auth.reducer.js**
+```
+import {createAction, createReducer} from "@reduxjs/toolkit";
+
+const storageName = 'auth'
+
+let data = JSON.parse(localStorage.getItem(storageName))
+
+if (data && Date.now() > data.tokenExpirationTime) {
+    data = null
+}
+
+const initialState = {
+    user: data?.user,
+    tokenValue: data?.tokenValue
+}
+
+export const login = createAction("LOGIN",(profile, token) => {
+    return {
+        payload: {
+            user : profile,
+            tokenValue : token
+        },
+    }
+})
+export const logout = createAction("LOGOUT")
+
+export const changeProfile = createAction("CHANGE_PROFILE",(d) => {
+    return {
+        payload: {
+            user : d
+        },
+    }
+})
+
+export const updateUserImage = createAction("UPDATE_USER_IMAGE",(imageUrl) => {
+    return {
+        payload: imageUrl,
+    }
+})
+
+export default createReducer(initialState,{
+    [login]: (state,action) =>{
+        state.user = action.payload.user
+        state.tokenValue = action.payload.tokenValue
+
+        if(action.payload){
+            localStorage.setItem(storageName, JSON.stringify(state))
+        }
+    },
+    [logout]: (state) =>{
+        state.user = null
+        state.tokenValue = null
+        localStorage.setItem(storageName, null)
+    },
+    [changeProfile]: (state,action) =>{
+        state.user = {...state.user,...action.payload.user}
+
+        if(action.payload){
+            localStorage.setItem(storageName, JSON.stringify(state))
+        }
+    },
+    [updateUserImage]: (state,action) =>{
+        if(state.user) {
+            state.user.image = action.payload
+        }
+        if(action.payload){
+            localStorage.setItem(storageName, JSON.stringify(state))
+        }
+    },
+})
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\stores\authStore.js**
+```
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import authReducer from "../reducers/auth.reducer";
+
+const rootReducer = combineReducers({
+    auth : authReducer,
+})
+
+export default configureStore({
+    reducer: rootReducer,
+})
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\utils\form.data.utils.js**
+```
+
+class FormDataUtils{
+    toObject(formData){
+        const fd = new FormData(formData)
+
+        return  Array.from(fd.entries()).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+    }
+}
+
+export default new FormDataUtils()
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\utils\role.utils.js**
+```
+
+export const Role = {
+    ADMIN: 'ADMIN',
+    USER: 'USER'
+}
+
+export const toRole = (s) => {
+    if(s === 'U'){
+        return Role.USER
+    }
+    return Role.ADMIN
+}
+```
+
+**D:\ÕÍÓÐßÒÍß\6 ñåìåñòð\àïç\DiveLicencePRO\frontend\my-app\src\utils\ui.utils.js**
+```
+export const inputSize = {
+    style:{
+        width: '300px'
+    }
+}
+
+export const btnSize = {
+    style: {
+        width: '200px',
+        margin: '10px auto 0',
+        fontSize: '36px'
+    }
+}
+```
+

@@ -1,0 +1,40 @@
+.box{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 50px;
+    row-gap: 10px;
+}
+
+.inputBox {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    row-gap: 1px;
+  }
+  
+  .inputBox select {
+    width: auto;
+    font-size: 20px;
+    padding: 5px 10px;
+    color: var(--main-some-light-color);
+    border: 2px solid var(--main-color);
+    outline: none;
+    border-radius: 15px;
+  }
+  
+  .inputBox label {
+    padding-left: 14px;
+    font-size: 24px;
+    color: var(--main-color);
+  }
+  
+  .inputBox select:hover,
+  .inputBox select:focus {
+    border: 2px solid var(--main-light-color);
+  }
+  
+  .inputBox label:hover {
+    color: var(--main-light-color);
+  }

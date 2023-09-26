@@ -1,0 +1,7 @@
+.box{
+    border: none;
+    outline: none;
+    color: var(--main-light-background-color);
+    background: var(--main-color);
+    font-size: 24px;
+}
